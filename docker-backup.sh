@@ -15,6 +15,10 @@ do
   if [ $i -eq 1 ]; then
     continue;
   fi
+  cname=$(echo $CONTAINER | awk '{print $NF}' | sed "s/[^[:alnum:]_]/_/g")
+  echo "Backing up $(echo $CONTAINER | awk '{print $NF}')..."
+#  echo "${cname}_${DATE}.tar.gz"
   docker export $(echo $CONTAINER | awk '{print $1}') |
-  gzip -c > $(echo $CONTAINER | awk '{print $NF}')_$DATE.tar.gz
+  gzip -c > "${cname}_${DATE}.tar.gz" &&
+  echo "Done."
 done
